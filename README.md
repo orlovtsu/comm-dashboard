@@ -20,6 +20,8 @@ The Commodity Price Analysis Dashboard is a web application that provides visual
 
 ## Installation
 
+To install localy follow these steps:
+
 1. Clone the repository:
 
 ```bash
