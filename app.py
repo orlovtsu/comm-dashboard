@@ -6,10 +6,10 @@ import dash_html_components as html
 import plotly.graph_objs as go
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
-from flask import Flask
 from data_load import fetch_data
 from figs import plot1, plot2, plot3
 from datetime import datetime
+
 
 df = pd.read_csv('gapminderDataFiveYear.csv')
 
