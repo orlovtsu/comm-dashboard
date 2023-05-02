@@ -104,3 +104,7 @@ The price data for the commodities is fetched from Yahoo Finance using the `yfin
 ## Credits
 
 The Commodity Price Analysis Dashboard is developed by [Sergey Orlov](https://www.linkedin.com/in/orlovtsu/). It is an open-source project. If you find any issues or have suggestions for improvements, please open an issue or submit a pull request
+
+## License 
+
+This project is licensed under the [MIT License](https://opensource.org/license/mit/).
