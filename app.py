@@ -9,6 +9,7 @@ from dash.dependencies import Input, Output, State
 from data_load import fetch_data
 from figs import plot1, plot2, plot3
 from datetime import datetime
+import plotly.express as px
 
 
 df = pd.read_csv('gapminderDataFiveYear.csv')
