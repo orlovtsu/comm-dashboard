@@ -1,4 +1,4 @@
-# Commodity Price Analysis Dashboard
+# Commodity Price Analysis Dashboard using Dash App deployed to Azure Cloud
 
 The Commodity Price Analysis Dashboard is a web application that provides visualizations and analysis of historical price data for various commodities. It fetches data from Yahoo Finance using the `yfinance` library and allows users to explore price trends, volume, and correlations between commodities.
 
