@@ -1,19 +1,18 @@
-import pandas as pd
-import numpy as np
+# Import necessary modules
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-import plotly.graph_objs as go
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
 from data_load import fetch_data
 from figs import plot1, plot2, plot3
 from datetime import datetime
-import plotly.express as px
 
+# Define the start and end date for data retrieval
 start_date = datetime(2022, 1, 1)
 end_date = datetime.now()
 
+# Define a dictionary of commodities and their corresponding ticker symbols
 commodities = {
     "Natural Gas": "NG=F",
     "Brent Oil": "BZ=F",
@@ -32,18 +31,21 @@ commodities = {
     "Cocoa": "CC=F",
 }
 
+
+# Fetch data for the specified commodities and date range
 data_dict = fetch_data(commodities, start_date, end_date)
 
-#df = pd.read_csv('gapminderDataFiveYear.csv')
-
+# Create a Dash app instance
 dash_app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
 app = dash_app.server
 
-
+# Define the layout of the Dash app using HTML and Dash components
 dash_app.layout = html.Div(
     [
+        # Stylesheet link
         html.Link(rel='stylesheet', href='/static/style.css'),
-        # left column
+
+        # Left column
         html.Div(
             [
                 html.Div(
@@ -102,7 +104,7 @@ dash_app.layout = html.Div(
                    'margin': '20px'}
         ),
 
-        # right column
+        # Right column
         html.Div(
             [
                 dcc.Dropdown(
@@ -163,7 +165,7 @@ dash_app.layout = html.Div(
     style={'display': 'flex', 'background-color': 'white', 'color': 'black'}
 )
 
-
+# Callback to update the selected ticker value in the dropdown
 @dash_app.callback(
     Output('ticker-dropdown', 'value'),
     [Input(f'ticker-{value}', 'n_clicks') for key, value in commodities.items()],
@@ -177,7 +179,7 @@ def update_ticker(value, *args):
         return ticker
     return value
 
-
+# Callback to update the plots based on the selected ticker and date range
 @dash_app.callback(
     [Output('plot-1', 'figure'),
      Output('plot-2', 'figure'),
@@ -190,21 +192,27 @@ def update_ticker(value, *args):
 def update_plots(ticker, start_date, end_date):
     if ticker is None:
         ticker = 'NG=F'
-    #print(ticker, start_date, end_date)
 
+    # Filter the data based on the selected date range
     filtered_df = data_dict[ticker][
         (data_dict[ticker]['Date'] >= start_date) & (data_dict[ticker]['Date'] <= end_date)]
+
+    # Get the ticker name from the commodities dictionary
     ticker_name = list(commodities.keys())[list(commodities.values()).index(ticker)]
+
+    # Generate the plots using the filtered data and ticker name
     fig1 = plot1(filtered_df, ticker_name)
     fig2 = plot2(filtered_df, ticker_name)
     fig3 = plot3(data_dict, commodities, start_date, end_date)
 
-    frame1_color = '#2f4554' #if ticker == 'NG=F' else '#ced4da'
-    frame2_color = '#2a9d8f' #if ticker == 'BZ=F' else '#ced4da'
-    frame3_color = '#e9c46a' #if ticker == 'CL=F' else '#ced4da'
-    frame4_color = '#f4a261' #if ticker == 'GC=F' else '#ced4da'
 
+    # Define the colors for the frames
+    frame1_color = '#2f4554'
+    frame2_color = '#2a9d8f'
+    frame3_color = '#e9c46a'
+    frame4_color = '#f4a261'
 
+    # Format the current price, volumes, and create text elements for the frames
     current_price = "{:.4f}".format(filtered_df['Close'].iloc[-1])
     today_volume = "{:.2f}".format(filtered_df['Volume'].iloc[-1])
     week_volume = "{:.2f}".format(filtered_df['Volume'].iloc[-5:-1].sum())
@@ -215,7 +223,7 @@ def update_plots(ticker, start_date, end_date):
     frame3_text = html.H4(['Last week volume', html.Br(), week_volume], style={'color': 'white'})
     frame4_text = html.H4(['Last month volume', html.Br(), month_price], style={'color': 'white'})
 
-
+    # Return the figures and text elements to be displayed in the app layout
     return (
         fig1,
         fig3,
@@ -283,37 +291,7 @@ def update_plots(ticker, start_date, end_date):
     )
 
 
-
-# dash_app.layout = html.Div([
-#     dcc.Graph(id='graph-with-slider'),
-#     dcc.Slider(
-#         id='year-slider',
-#         min=df['year'].min(),
-#         max=df['year'].max(),
-#         value=df['year'].min(),
-#         marks={str(year): str(year) for year in df['year'].unique()},
-#         step=None
-#     )
-# ])
-#
-#
-#
-#
-# @dash_app.callback(
-#     Output('graph-with-slider', 'figure'),
-#     Input('year-slider', 'value'))
-#
-# def update_figure(selected_year):
-#     filtered_df = df[df.year == selected_year]
-#
-#     fig = px.scatter(filtered_df, x="gdpPercap", y="lifeExp",
-#                      size="pop", color="continent", hover_name="country",
-#                      log_x=True, size_max=55, template="plotly_dark")
-#
-#     fig.update_layout(transition_duration=500)
-#
-#     return fig
-#
+# Run the Dash app
 
 if __name__ == '__main__':
     dash_app.run_server(debug=True)
