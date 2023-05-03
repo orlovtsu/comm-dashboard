@@ -10,7 +10,7 @@ from datetime import datetime
 
 # Define the start and end date for data retrieval
 start_date = datetime(2022, 1, 1)
-end_date = datetime.now()
+end_date = datetime.now() #today's date
 
 # Define a dictionary of commodities and their corresponding ticker symbols
 commodities = {
