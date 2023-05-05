@@ -44,6 +44,62 @@ dash_app.layout = html.Div(
     [
         # Stylesheet link
         html.Link(rel='stylesheet', href='/static/style.css'),
+        # Right column
+        html.Div(
+            [
+                dcc.Dropdown(
+                    id='ticker-dropdown',
+                    options=[{'label': value, 'value': value} for key, value in commodities.items()],
+
+                    clearable=False,
+                    style={'display': 'none'}
+                ),
+                html.Div(
+                    [
+                        dcc.Graph(
+                            id='plot-1',
+                            config={'displayModeBar': False},
+                            style={'width': '49%', 'display': 'inline-block',
+                                   'border': '1px solid #c0c0c0', 'border-radius': '25px', 'overflow': 'hidden', 'margin-right': '2%'}
+                        ),
+                        dcc.Graph(id='plot-2',
+                                  style={'width': '49%', 'display': 'inline-block',
+                                         'border': '1px solid #c0c0c0', 'border-radius': '25px', 'overflow': 'hidden'}
+                                  ),
+                    ],
+                    style={'width': '100%'}
+                ),
+                html.Div(
+                    [
+                        dcc.Graph(id='plot-3',
+                                  style={'width': '50%', 'display': 'inline-block',
+                                         'border': '1px solid #c0c0c0', 'border-radius': '25px', 'overflow': 'hidden',
+                                         'margin-right': '0%'}
+                                  ),
+                        html.Div(
+                            id='plot-4',
+                            style={'width': '50%', 'display': 'inline-block',
+                                   'border-radius': '25px', 'margin': '20px'}
+                        ),
+                    ],
+                    style={'display': 'flex', 'justify-content': 'space-between', 'width': '100%',
+                           'align-items': 'flex-start'}
+                ),
+                html.Footer(
+                    [
+                        html.P(
+                            "Disclaimer: The data provided in this application is for informational purposes only. " \
+                            "Please note that the data sources used are subject to their respective terms and conditions. " \
+                            "The data for this application is fetching from Yahoo Finance using the yfinance library."
+                        ),
+                    ],
+                    style={'margin': '20px', 'text-align': 'left'}
+                )
+
+            ],
+            className='right-column',
+            style={'width': '80%', 'padding': '15px'}
+        ),
 
         # Left column
         html.Div(
@@ -102,63 +158,6 @@ dash_app.layout = html.Div(
             style={'width': '15%', 'background-color': '#2f4554', 'padding': '15px',
                    'border': '1px solid #c0c0c0', 'border-radius': '25px',
                    'margin': '20px'}
-        ),
-
-        # Right column
-        html.Div(
-            [
-                dcc.Dropdown(
-                    id='ticker-dropdown',
-                    options=[{'label': value, 'value': value} for key, value in commodities.items()],
-
-                    clearable=False,
-                    style={'display': 'none'}
-                ),
-                html.Div(
-                    [
-                        dcc.Graph(
-                            id='plot-1',
-                            config={'displayModeBar': False},
-                            style={'width': '49%', 'display': 'inline-block',
-                                   'border': '1px solid #c0c0c0', 'border-radius': '25px', 'overflow': 'hidden', 'margin-right': '2%'}
-                        ),
-                        dcc.Graph(id='plot-2',
-                                  style={'width': '49%', 'display': 'inline-block',
-                                         'border': '1px solid #c0c0c0', 'border-radius': '25px', 'overflow': 'hidden'}
-                                  ),
-                    ],
-                    style={'width': '100%'}
-                ),
-                html.Div(
-                    [
-                        dcc.Graph(id='plot-3',
-                                  style={'width': '50%', 'display': 'inline-block',
-                                         'border': '1px solid #c0c0c0', 'border-radius': '25px', 'overflow': 'hidden',
-                                         'margin-right': '0%'}
-                                  ),
-                        html.Div(
-                            id='plot-4',
-                            style={'width': '50%', 'display': 'inline-block',
-                                   'border-radius': '25px', 'margin': '20px'}
-                        ),
-                    ],
-                    style={'display': 'flex', 'justify-content': 'space-between', 'width': '100%',
-                           'align-items': 'flex-start'}
-                ),
-                html.Footer(
-                    [
-                        html.P(
-                            "Disclaimer: The data provided in this application is for informational purposes only. " \
-                            "Please note that the data sources used are subject to their respective terms and conditions. " \
-                            "The data for this application is fetching from Yahoo Finance using the yfinance library."
-                        ),
-                    ],
-                    style={'margin': '20px', 'text-align': 'left'}
-                )
-
-            ],
-            className='right-column',
-            style={'width': '80%', 'padding': '15px'}
         ),
 
     ],
@@ -225,9 +224,6 @@ def update_plots(ticker, start_date, end_date):
 
     # Return the figures and text elements to be displayed in the app layout
     return (
-        fig1,
-        fig3,
-        fig2,
         html.Div(
             [
                 html.Div(
@@ -286,10 +282,11 @@ def update_plots(ticker, start_date, end_date):
                 )
             ],
             style={'display': 'flex', 'justify-content': 'space-between', 'width': '100%', 'align-items': 'center'}
-        )
-
-    )
-
+        ),
+        fig1,
+        fig3,
+        fig2
+    ),
 
 # Run the Dash app
 
