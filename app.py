@@ -10,7 +10,7 @@ from datetime import datetime
 
 # Define the start and end date for data retrieval
 start_date = datetime(2022, 1, 1)
-end_date = datetime.now() #today's date
+end_date = datetime.now() #today
 
 # Define a dictionary of commodities and their corresponding ticker symbols
 commodities = {
@@ -44,7 +44,7 @@ dash_app.layout = html.Div(
     [
         # Stylesheet link
         html.Link(rel='stylesheet', href='/static/style.css'),
-        # Right column
+        # Left column
         html.Div(
             [
                 dcc.Dropdown(
@@ -56,24 +56,26 @@ dash_app.layout = html.Div(
                 ),
                 html.Header(
                     [
-                        html.H1('Commodity Price Dashboard')    # Title
+                        html.H1('Commodity Price Dashboard')  # Title
                     ]
-                )
+                ),
                 html.Div(
                     [
                         html.Div(
                             id='plot-4',
-                            style={'width': '50%', 'display': 'inline-block',
-                                   'border-radius': '25px', 'margin': '20px'}
+                            style={'width': '47%', 'display': 'inline-block',
+                                   'border-radius': '25px', 'margin-left': '0px', 'align-items': 'center',  'vertical-align': 'middle'}
                         ),
                         dcc.Graph(
                             id='plot-1',
                             config={'displayModeBar': False},
-                            style={'width': '49%', 'display': 'inline-block',
-                                   'border': '1px solid #c0c0c0', 'border-radius': '25px', 'overflow': 'hidden', 'margin-right': '2%'}
+                            style={'width': '50%', 'display': 'inline-block',
+                                         'border': '1px solid #c0c0c0', 'border-radius': '25px', 'overflow': 'hidden',
+                                         'margin-left': '2%'}
                         ),
                     ],
-                    style={'width': '100%'}
+                    style={'display': 'flex', 'justify-content': 'space-between', 'width': '100%',
+                           'align-items': 'center', 'vertical-align': 'middle'}
                 ),
                 html.Div(
                     [
@@ -103,10 +105,9 @@ dash_app.layout = html.Div(
 
             ],
             className='right-column',
-            style={'width': '80%', 'padding': '15px'}
+            style={'width': '85%', 'padding': '15px', 'margin-left': '20px', 'margin-right': '20px'}
         ),
-
-        # Left column
+        # Right column
         html.Div(
             [
                 html.Div(
@@ -164,6 +165,7 @@ dash_app.layout = html.Div(
                    'border': '1px solid #c0c0c0', 'border-radius': '25px',
                    'margin': '20px'}
         ),
+
     ],
     style={'display': 'flex', 'background-color': 'white', 'color': 'black'}
 )
@@ -290,9 +292,11 @@ def update_plots(ticker, start_date, end_date):
             ],
             style={'display': 'flex', 'justify-content': 'space-between', 'width': '100%', 'align-items': 'center'}
         )
-    ),
+
+    )
+
 
 # Run the Dash app
 
 if __name__ == '__main__':
-    dash_app.run_server(debug=True)
+    dash_app.run_server(debug=False)
