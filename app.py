@@ -54,33 +54,38 @@ dash_app.layout = html.Div(
                     clearable=False,
                     style={'display': 'none'}
                 ),
+                html.Header(
+                    [
+                        html.H1('Commodity Price Dashboard')    # Title
+                    ]
+                )
                 html.Div(
                     [
+                        html.Div(
+                            id='plot-4',
+                            style={'width': '50%', 'display': 'inline-block',
+                                   'border-radius': '25px', 'margin': '20px'}
+                        ),
                         dcc.Graph(
                             id='plot-1',
                             config={'displayModeBar': False},
                             style={'width': '49%', 'display': 'inline-block',
                                    'border': '1px solid #c0c0c0', 'border-radius': '25px', 'overflow': 'hidden', 'margin-right': '2%'}
                         ),
-                        dcc.Graph(id='plot-2',
-                                  style={'width': '49%', 'display': 'inline-block',
-                                         'border': '1px solid #c0c0c0', 'border-radius': '25px', 'overflow': 'hidden'}
-                                  ),
                     ],
                     style={'width': '100%'}
                 ),
                 html.Div(
                     [
+                        dcc.Graph(id='plot-2',
+                                  style={'width': '49%', 'display': 'inline-block',
+                                         'border': '1px solid #c0c0c0', 'border-radius': '25px', 'overflow': 'hidden'}
+                                  ),
                         dcc.Graph(id='plot-3',
                                   style={'width': '50%', 'display': 'inline-block',
                                          'border': '1px solid #c0c0c0', 'border-radius': '25px', 'overflow': 'hidden',
                                          'margin-right': '0%'}
                                   ),
-                        html.Div(
-                            id='plot-4',
-                            style={'width': '50%', 'display': 'inline-block',
-                                   'border-radius': '25px', 'margin': '20px'}
-                        ),
                     ],
                     style={'display': 'flex', 'justify-content': 'space-between', 'width': '100%',
                            'align-items': 'flex-start'}
@@ -159,7 +164,6 @@ dash_app.layout = html.Div(
                    'border': '1px solid #c0c0c0', 'border-radius': '25px',
                    'margin': '20px'}
         ),
-
     ],
     style={'display': 'flex', 'background-color': 'white', 'color': 'black'}
 )
@@ -224,6 +228,9 @@ def update_plots(ticker, start_date, end_date):
 
     # Return the figures and text elements to be displayed in the app layout
     return (
+        fig1,
+        fig3,
+        fig2,
         html.Div(
             [
                 html.Div(
@@ -282,10 +289,7 @@ def update_plots(ticker, start_date, end_date):
                 )
             ],
             style={'display': 'flex', 'justify-content': 'space-between', 'width': '100%', 'align-items': 'center'}
-        ),
-        fig1,
-        fig3,
-        fig2
+        )
     ),
 
 # Run the Dash app
